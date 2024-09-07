@@ -68,7 +68,21 @@ def get_todos_for_user(
     return crud.get_todos_by_user(db=db, user_id=user_id)
 
 
-@app.get("/Todos/", response_model=list[schemas.Todo])
+@app.get("/todos/", response_model=list[schemas.Todo])
 def read_todos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos
+
+@app.get("/todo/{todo_id}", response_model=schemas.Todo)
+def get_todo(todo_id: int, user_id: int, db: Session = Depends(get_db)):
+    todo = crud.get_user_todo(db, user_id, todo_id)
+    if todo is None:
+        raise HTTPException(404, "Todo not found")
+    return todo
+
+@app.delete("/todo/{todo_id}", response_model=schemas.Todo)
+def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    todo = crud.delete_todo(db, todo_id)
+    if todo is None:
+        raise HTTPException(404, "Todo not found")
+    return todo
