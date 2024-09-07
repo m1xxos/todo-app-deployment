@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from sqlalchemy.orm import Session
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -7,6 +8,9 @@ from .database import SessionLocal, engine
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+instrumentator = Instrumentator().instrument(app)
+Instrumentator().instrument(app).expose(app)
 
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next):
@@ -21,6 +25,12 @@ async def db_session_middleware(request: Request, call_next):
 # Dependency
 def get_db(request: Request):
     return request.state.db
+
+
+@app.get("/ping", status_code=200)
+async def ping():
+    return {"ping": "ok"}
+
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -49,6 +59,7 @@ def create_todo_for_user(
     user_id: int, todo: schemas.TodoCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_todo(db=db, todo=todo, user_id=user_id)
+
 
 @app.get("/users/{user_id}/todos/", response_model=list[schemas.Todo])
 def get_todos_for_user(
