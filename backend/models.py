@@ -12,7 +12,7 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    items = relationship("Todo", back_populates="owner")
+    todos = relationship("Todo", back_populates="owner")
 
 
 class Todo(Base):
@@ -24,4 +24,4 @@ class Todo(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
     done = Column(Boolean, default=False)
 
-    owner = relationship("User", back_populates="items")
+    owner = relationship("User", back_populates="todos")

@@ -29,7 +29,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    Todos: list[Todo] = []
+    todos: list[Todo] = []
 
     class Config:
         orm_mode = True
