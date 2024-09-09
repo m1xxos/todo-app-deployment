@@ -27,8 +27,16 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_todos(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Todo).offset(skip).limit(limit).all()
 
-def get_todos_by_user(db: Session, user_id:int, skip: int = 0, limit: int = 100):
-    return db.query(models.Todo).filter(models.Todo.owner_id == user_id).offset(skip).limit(limit).all()
+
+def get_todos_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100):
+    return (
+        db.query(models.Todo)
+        .filter(models.Todo.owner_id == user_id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
 
 def create_user_todo(db: Session, todo: schemas.TodoCreate, user_id: int):
     db_todo = models.Todo(**todo.model_dump(), owner_id=user_id)
@@ -37,8 +45,14 @@ def create_user_todo(db: Session, todo: schemas.TodoCreate, user_id: int):
     db.refresh(db_todo)
     return db_todo
 
+
 def get_user_todo(db: Session, user_id: int, todo_id: int):
-    return db.query(models.Todo).filter((models.Todo.id == todo_id) & (models.Todo.owner_id == user_id)).first()
+    return (
+        db.query(models.Todo)
+        .filter((models.Todo.id == todo_id) & (models.Todo.owner_id == user_id))
+        .first()
+    )
+
 
 def delete_todo(db: Session, todo_id: int):
     db_todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
@@ -46,4 +60,4 @@ def delete_todo(db: Session, todo_id: int):
         return None
     db.delete(db_todo)
     db.commit()
-    return(db_todo)
+    return db_todo

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from .. import crud, schemas, dependencies
 from sqlalchemy.orm import Session
+
+from .. import crud, dependencies, schemas
 
 router = APIRouter(prefix="/todo")
 
@@ -29,11 +30,18 @@ def delete_todo(todo_id: int, db: Session = Depends(dependencies.get_db)):
 
 
 @router.get("/user/{user_id}/", response_model=list[schemas.Todo])
-def get_todos_for_user(user_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)):
+def get_todos_for_user(
+    user_id: int,
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(dependencies.get_db),
+):
     return crud.get_todos_by_user(db, user_id, skip, limit)
 
 
 @router.get("/all", response_model=list[schemas.Todo])
-def read_todos(skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)):
+def read_todos(
+    skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)
+):
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos

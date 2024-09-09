@@ -1,11 +1,9 @@
-from fastapi import Depends, FastAPI, HTTPException, Request, Response
-from sqlalchemy.orm import Session
+from fastapi import FastAPI, Request, Response
 from prometheus_fastapi_instrumentator import Instrumentator
 
-from . import crud, models, schemas
+from . import models
 from .database import SessionLocal, engine
-from .routers import users, todos
-from .dependencies import get_db
+from .routers import todos, users
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -13,6 +11,7 @@ app = FastAPI()
 
 instrumentator = Instrumentator().instrument(app)
 Instrumentator().instrument(app).expose(app)
+
 
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next):
@@ -23,6 +22,7 @@ async def db_session_middleware(request: Request, call_next):
     finally:
         request.state.db.close()
     return response
+
 
 @app.get("/ping", status_code=200)
 async def ping():
