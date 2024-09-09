@@ -9,10 +9,13 @@ class TodoBase(BaseModel):
 class TodoCreate(TodoBase):
     pass
 
+class TodoUpdate(TodoBase):
+    done: bool
 
 class Todo(TodoBase):
     id: int
     owner_id: int
+    done: bool
 
     class Config:
         orm_mode = True

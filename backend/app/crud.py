@@ -45,6 +45,16 @@ def create_user_todo(db: Session, todo: schemas.TodoCreate, user_id: int):
     db.refresh(db_todo)
     return db_todo
 
+def update_todo(db: Session, todo:schemas.TodoUpdate, todo_id: int, user_id: int):
+    db_todo = get_user_todo(db, user_id, todo_id)
+    if db_todo is None:
+        return None
+    db_todo.done = todo.done
+    db_todo.title = todo.title
+    db_todo.description = todo.description
+    db.commit()
+    return db_todo
+
 
 def get_user_todo(db: Session, user_id: int, todo_id: int):
     return (

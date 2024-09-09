@@ -28,6 +28,13 @@ def delete_todo(todo_id: int, db: Session = Depends(dependencies.get_db)):
         raise HTTPException(404, "Todo not found")
     return todo
 
+@router.put("/", response_model=schemas.Todo)
+def update_todo(todo_id: int, user_id: int, new_todo:schemas.TodoUpdate, db: Session = Depends(dependencies.get_db)):
+    todo = crud.update_todo(db, new_todo, todo_id, user_id)
+    if todo is None:
+        raise HTTPException(404, "Todo not found")
+    return todo
+
 
 @router.get("/user/{user_id}/", response_model=list[schemas.Todo])
 def get_todos_for_user(
