@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request, Response
 from prometheus_fastapi_instrumentator import Instrumentator
 
-from . import models
-from .database import SessionLocal, engine
+from .database import models
+from .database.database import SessionLocal, engine
 from .routers import todos, users
 
 models.Base.metadata.create_all(bind=engine)

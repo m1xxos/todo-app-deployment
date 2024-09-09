@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from .. import crud, dependencies, schemas
+from ..database import crud, schemas
+
+from .. import dependencies
+
+
+TODO_NOT_FOUND = "Todo not found"
 
 router = APIRouter(prefix="/todo")
 
@@ -17,7 +22,7 @@ def create_todo_for_user(
 def get_todo(todo_id: int, user_id: int, db: Session = Depends(dependencies.get_db)):
     todo = crud.get_user_todo(db, user_id, todo_id)
     if todo is None:
-        raise HTTPException(404, "Todo not found")
+        raise HTTPException(404, TODO_NOT_FOUND)
     return todo
 
 
@@ -25,14 +30,20 @@ def get_todo(todo_id: int, user_id: int, db: Session = Depends(dependencies.get_
 def delete_todo(todo_id: int, db: Session = Depends(dependencies.get_db)):
     todo = crud.delete_todo(db, todo_id)
     if todo is None:
-        raise HTTPException(404, "Todo not found")
+        raise HTTPException(404, TODO_NOT_FOUND)
     return todo
 
+
 @router.put("/", response_model=schemas.Todo)
-def update_todo(todo_id: int, user_id: int, new_todo:schemas.TodoUpdate, db: Session = Depends(dependencies.get_db)):
+def update_todo(
+    todo_id: int,
+    user_id: int,
+    new_todo: schemas.TodoUpdate,
+    db: Session = Depends(dependencies.get_db),
+):
     todo = crud.update_todo(db, new_todo, todo_id, user_id)
     if todo is None:
-        raise HTTPException(404, "Todo not found")
+        raise HTTPException(404, TODO_NOT_FOUND)
     return todo
 
 
