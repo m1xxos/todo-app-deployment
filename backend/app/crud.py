@@ -42,6 +42,8 @@ def get_user_todo(db: Session, user_id: int, todo_id: int):
 
 def delete_todo(db: Session, todo_id: int):
     db_todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    if db_todo is None:
+        return None
     db.delete(db_todo)
     db.commit()
     return(db_todo)

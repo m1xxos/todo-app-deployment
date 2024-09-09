@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from .. import crud, schemas, dependencies
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/todo", 
-                   dependencies=[Depends(dependencies.get_db)])
+router = APIRouter(prefix="/todo")
 
 
 @router.post("/", response_model=schemas.Todo)
@@ -13,7 +12,7 @@ def create_todo_for_user(
     return crud.create_user_todo(db=db, todo=todo, user_id=user_id)
 
 
-@router.get("/{todo_id}", response_model=schemas.Todo)
+@router.get("/", response_model=schemas.Todo)
 def get_todo(todo_id: int, user_id: int, db: Session = Depends(dependencies.get_db)):
     todo = crud.get_user_todo(db, user_id, todo_id)
     if todo is None:
@@ -21,7 +20,7 @@ def get_todo(todo_id: int, user_id: int, db: Session = Depends(dependencies.get_
     return todo
 
 
-@router.delete("/{todo_id}", response_model=schemas.Todo)
+@router.delete("/", response_model=schemas.Todo)
 def delete_todo(todo_id: int, db: Session = Depends(dependencies.get_db)):
     todo = crud.delete_todo(db, todo_id)
     if todo is None:
@@ -29,7 +28,7 @@ def delete_todo(todo_id: int, db: Session = Depends(dependencies.get_db)):
     return todo
 
 
-@router.get("/users/{user_id}/todos/", response_model=list[schemas.Todo])
+@router.get("/user/{user_id}/", response_model=list[schemas.Todo])
 def get_todos_for_user(user_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)):
     return crud.get_todos_by_user(db, user_id, skip, limit)
 
