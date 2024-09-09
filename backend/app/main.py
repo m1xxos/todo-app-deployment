@@ -62,10 +62,8 @@ def create_todo_for_user(
 
 
 @app.get("/users/{user_id}/todos/", response_model=list[schemas.Todo])
-def get_todos_for_user(
-    user_id: int, db: Session = Depends(get_db)
-):
-    return crud.get_todos_by_user(db=db, user_id=user_id)
+def get_todos_for_user(user_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_todos_by_user(db, user_id, skip, limit)
 
 
 @app.get("/todos/", response_model=list[schemas.Todo])
