@@ -55,13 +55,3 @@ data "talos_cluster_kubeconfig" "kubeconfig" {
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
   node                 = var.talos_cp_01_ip_addr
 }
-
-output "talosconfig" {
-  value     = data.talos_client_configuration.talosconfig.talos_config
-  sensitive = true
-}
-
-output "kubeconfig" {
-  value     = data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw
-  sensitive = true
-}
