@@ -12,6 +12,11 @@ variable "proxmox_api_token_secret" {
   sensitive = true
 }
 
+variable "ssh_password" {
+  type = string
+  sensitive = true
+}
+
 variable "bucket" {
   type = string
 }
@@ -51,7 +56,7 @@ variable "cluster_name" {
 
 variable "default_gateway" {
   type    = string
-  default = "192.168.1.0"
+  default = "192.168.1.1"
 }
 
 variable "talos_cp_01_ip_addr" {
