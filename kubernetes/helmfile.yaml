@@ -12,6 +12,10 @@ releases:
   set:
   - name: providers.kubernetesGateway.enable
     value: true
+  - name: ingressRoute.dashboard.enabled
+    value: true
+  - name: experimental.kubernetesGateway.enable
+    value: true
 - name: metallb
   chart: metallb/metallb
   createNamespace: true
