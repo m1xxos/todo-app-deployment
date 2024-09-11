@@ -9,6 +9,14 @@ provider "registry.terraform.io/bpg/proxmox" {
   ]
 }
 
+provider "registry.terraform.io/cloudflare/cloudflare" {
+  version     = "4.41.0"
+  constraints = "4.41.0"
+  hashes = [
+    "h1:v7sHvKq7oqMYPn47ULHFyIQsKD9o+6Xg/uHbxQUixEw=",
+  ]
+}
+
 provider "registry.terraform.io/siderolabs/talos" {
   version     = "0.5.0"
   constraints = "0.5.0"

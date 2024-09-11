@@ -10,3 +10,7 @@ provider "proxmox" {
     password = var.ssh_password
   }
 }
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}

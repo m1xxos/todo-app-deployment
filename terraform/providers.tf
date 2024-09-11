@@ -8,6 +8,10 @@ terraform {
       source  = "siderolabs/talos"
       version = "0.5.0"
     }
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+      version = "4.41.0"
+    }
   }
   backend "s3" {
     endpoint                    = "https://storage.yandexcloud.net"
