@@ -1,13 +1,14 @@
-apiVersion: apps/v1
+# Application to expose
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: whoami
-  namespace: default
+  namespace: whoami
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: whoami
-
   template:
     metadata:
       labels:
@@ -16,15 +17,41 @@ spec:
       containers:
       - name: whoami
         image: traefik/whoami
-
 ---
+# Service to reach the application on the cluster
 apiVersion: v1
 kind: Service
 metadata:
   name: whoami
-  namespace: default
-spec:
-  selector:
+  namespace: whoami
+  labels:
     app: whoami
+spec:
+  type: ClusterIP
   ports:
   - port: 80
+    name: whoami
+  selector:
+    app: whoami
+---
+# HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: whoami-httproute
+  namespace: whoami
+spec:
+  parentRefs:
+  - name: traefik-gateway
+    namespace: traefik
+  hostnames:
+  - whoami.talos.m1xxos.me
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: whoami
+      namespace: whoami
+      port: 80
