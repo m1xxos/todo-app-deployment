@@ -13,7 +13,7 @@ variable "proxmox_api_token_secret" {
 }
 
 variable "ssh_password" {
-  type = string
+  type      = string
   sensitive = true
 }
 
