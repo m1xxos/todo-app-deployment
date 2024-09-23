@@ -1,3 +1,11 @@
+locals {
+  talos_cp_ips = [
+    var.talos_cp_01_ip_addr,
+    var.talos_cp_02_ip_addr,
+    var.talos_cp_03_ip_addr
+  ]
+}
+
 resource "talos_machine_secrets" "machine_secrets" {}
 
 data "talos_client_configuration" "talosconfig" {
@@ -17,8 +25,8 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
   depends_on                  = [proxmox_virtual_environment_vm.talos_cp_01]
   client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.machineconfig_cp.machine_configuration
-  count                       = 1
-  node                        = var.talos_cp_01_ip_addr
+  count                       = 3
+  node                        = local.talos_cp_ips[count.index]
   config_patches = [
     yamlencode({
       cluster = {
@@ -52,6 +60,18 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
           cni = {
             name = "none"
           }
+        }
+      },
+      machine = {
+        kubelet = {
+          extraMounts = [
+            {destination = "/var/lib/longhorn",
+            type = "bind",
+            source = "/var/lib/longhorn",
+            options = [
+              "bind", "rshared", "rw"
+            ]}
+          ]
         }
       }
     })
