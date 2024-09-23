@@ -15,5 +15,5 @@ spec:
         value: /
     backendRefs:
     - name: todo
-      namespace: todo
+      namespace: default
       port: 80

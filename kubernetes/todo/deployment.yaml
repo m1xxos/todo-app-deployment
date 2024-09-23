@@ -21,5 +21,11 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        env:
+        - name: SQLALCHEMY_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: default-app
+              key: uri
         ports:
         - containerPort: 80
