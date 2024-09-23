@@ -19,6 +19,5 @@ releases:
   namespace: cnpg-system
 - name: longhorn
   chart: longhorn/longhorn
-  createNamespace: true
   namespace: longhorn-system
   version: 1.7.1
