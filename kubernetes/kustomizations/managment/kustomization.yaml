@@ -2,4 +2,4 @@
 resources:
 - longhornUi.yaml
 - pgCluster.yaml
-
+- grafanaUi.yaml
