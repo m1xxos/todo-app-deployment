@@ -6,7 +6,8 @@ locals {
   ]
   talos_worker_ips = [
     var.talos_worker_01_ip_addr,
-    var.talos_worker_02_ip_addr
+    var.talos_worker_02_ip_addr,
+    var.talos_worker_03_ip_addr
   ]
 }
 
@@ -64,10 +65,10 @@ data "talos_machine_configuration" "machineconfig_worker" {
 }
 
 resource "talos_machine_configuration_apply" "worker_config_apply" {
-  depends_on                  = [proxmox_virtual_environment_vm.talos_worker_01, proxmox_virtual_environment_vm.talos_worker_02]
+  depends_on                  = [proxmox_virtual_environment_vm.talos_worker_01, proxmox_virtual_environment_vm.talos_worker_02, proxmox_virtual_environment_vm.talos_worker_03]
   client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.machineconfig_worker.machine_configuration
-  count                       = 2
+  count                       = 3
   node                        = local.talos_worker_ips[count.index]
   config_patches = [
     yamlencode({
@@ -104,7 +105,7 @@ data "talos_cluster_health" "health" {
   depends_on           = [talos_machine_configuration_apply.cp_config_apply, talos_machine_configuration_apply.worker_config_apply]
   client_configuration = data.talos_client_configuration.talosconfig.client_configuration
   control_plane_nodes  = [var.talos_cp_01_ip_addr, var.talos_cp_02_ip_addr, var.talos_cp_03_ip_addr]
-  worker_nodes         = [var.talos_worker_01_ip_addr, var.talos_worker_02_ip_addr]
+  worker_nodes         = [var.talos_worker_01_ip_addr, var.talos_worker_02_ip_addr, var.talos_worker_03_ip_addr]
   endpoints            = data.talos_client_configuration.talosconfig.endpoints
 }
 

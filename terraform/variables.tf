@@ -74,7 +74,6 @@ variable "talos_cp_03_ip_addr" {
   default = "192.168.1.82"
 }
 
-
 variable "talos_worker_01_ip_addr" {
   type    = string
   default = "192.168.1.83"
@@ -83,4 +82,9 @@ variable "talos_worker_01_ip_addr" {
 variable "talos_worker_02_ip_addr" {
   type    = string
   default = "192.168.1.84"
+}
+
+variable "talos_worker_03_ip_addr" {
+  type    = string
+  default = "192.168.1.86"
 }
