@@ -50,7 +50,10 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
             options = [
               "bind", "rshared", "rw"
             ]}
-          ]
+          ],
+          extraArgs = {
+            "rotate-server-certificates" = "true"
+          }
         }
       }
     })
@@ -88,7 +91,10 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
             options = [
               "bind", "rshared", "rw"
             ]}
-          ]
+          ],
+          extraArgs = {
+            "rotate-server-certificates" = "true"
+          }
         }
       }
     })
