@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: todo
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: todo
@@ -11,6 +12,11 @@ spec:
       labels:
         app: todo
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
       containers:
       - name: todo
         image: ghcr.io/m1xxos/todo-backend:main
@@ -21,6 +27,14 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
         env:
         - name: SQLALCHEMY_DATABASE_URL
           valueFrom:
@@ -29,3 +43,15 @@ spec:
               key: uri
         ports:
         - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
