@@ -11,8 +11,3 @@ gateway:
   listeners:
     web:
       namespacePolicy: All
-
-additionalArguments:
-  - "--log.level=DEBUG"
-  - "--serversTransport.forwardingTimeouts.dialTimeout=30s"
-  - "--serversTransport.forwardingTimeouts.responseHeaderTimeout=30s"

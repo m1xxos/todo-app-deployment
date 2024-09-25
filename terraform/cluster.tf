@@ -50,10 +50,7 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
             options = [
               "bind", "rshared", "rw"
             ]}
-          ],
-          extraArgs = {
-            "rotate-server-certificates" = "true"
-          }
+          ]
         }
       }
     })
@@ -91,10 +88,7 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
             options = [
               "bind", "rshared", "rw"
             ]}
-          ],
-          extraArgs = {
-            "rotate-server-certificates" = "true"
-          }
+          ]
         }
       }
     })
@@ -107,13 +101,13 @@ resource "talos_machine_bootstrap" "bootstrap" {
   node                 = var.talos_cp_01_ip_addr
 }
 
-data "talos_cluster_health" "health" {
-  depends_on           = [talos_machine_configuration_apply.cp_config_apply, talos_machine_configuration_apply.worker_config_apply]
-  client_configuration = data.talos_client_configuration.talosconfig.client_configuration
-  control_plane_nodes  = [var.talos_cp_01_ip_addr, var.talos_cp_02_ip_addr, var.talos_cp_03_ip_addr]
-  worker_nodes         = [var.talos_worker_01_ip_addr, var.talos_worker_02_ip_addr, var.talos_worker_03_ip_addr]
-  endpoints            = data.talos_client_configuration.talosconfig.endpoints
-}
+# data "talos_cluster_health" "health" {
+#   depends_on           = [talos_machine_configuration_apply.cp_config_apply, talos_machine_configuration_apply.worker_config_apply]
+#   client_configuration = data.talos_client_configuration.talosconfig.client_configuration
+#   control_plane_nodes  = [var.talos_cp_01_ip_addr, var.talos_cp_02_ip_addr, var.talos_cp_03_ip_addr]
+#   worker_nodes         = [var.talos_worker_01_ip_addr, var.talos_worker_02_ip_addr, var.talos_worker_03_ip_addr]
+#   endpoints            = data.talos_client_configuration.talosconfig.endpoints
+# }
 
 data "talos_cluster_kubeconfig" "kubeconfig" {
   depends_on           = [talos_machine_bootstrap.bootstrap]#, data.talos_cluster_health.health]

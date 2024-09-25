@@ -30,6 +30,9 @@ releases:
   chart: metrics-server/metrics-server
   namespace: kube-system
   version: 3.12.1
+  set:
+  - name: args[0]
+    value: --kubelet-insecure-tls
 - name: kube-prometheus-stack
   chart: prometheus-community/kube-prometheus-stack
   namespace: monitoring
@@ -38,5 +41,5 @@ releases:
   values:
   - ./prom-values.yaml
   set:
-    - name: installCRDs
-      value: true
+  - name: installCRDs
+    value: true
