@@ -5,7 +5,7 @@ FROM cgr.dev/chainguard/python:latest-dev AS dev
 WORKDIR /app
 
 RUN python -m venv venv
-ENV PATH="/app/venv/bin":$PATH
+ENV PATH=/app/venv/bin:$PATH
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
