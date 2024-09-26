@@ -13,6 +13,7 @@ grafana:
         gnetId: 1860
         revision: 27
         datasource: Prometheus
+  timezone: "Europe/Moscow"
 
 prometheus:
   prometheusSpec:
