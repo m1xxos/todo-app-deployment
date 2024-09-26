@@ -40,6 +40,8 @@ releases:
   version: 62.7.0
   values:
   - ./prom-values.yaml
+  secrets:
+  - ./prom-secrets.yaml
   set:
   - name: installCRDs
     value: true
