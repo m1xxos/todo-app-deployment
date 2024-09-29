@@ -1,5 +1,6 @@
 */bsf-result/
 
+.env.secret
 # Logs
 logs
 *.log

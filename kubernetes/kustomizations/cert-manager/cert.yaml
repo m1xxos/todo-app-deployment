@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: talos-m1xxos-me
+  namespace: cert-manager
+spec:
+  secretName: talos-m1xxos-me
+  dnsNames:
+  - "talos.m1xxos.me"
+  - "*.talos.m1xxos.me"
+  issuerRef:
+    name: acme-issuer
+    kind: ClusterIssuer
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: ""
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: ""

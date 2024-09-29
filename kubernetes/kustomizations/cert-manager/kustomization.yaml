@@ -1,0 +1,10 @@
+namespace: cert-manager
+
+secretGenerator:
+- name: cloudflare-api-token-secret
+  files:
+  - .env.secret
+
+resources:
+- certIssuer.yaml
+- cert.yaml
