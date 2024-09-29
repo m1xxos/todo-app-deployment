@@ -1,19 +1,15 @@
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: grafana
+  name: grafana-ui
   namespace: monitoring
 spec:
-  parentRefs:
-  - name: traefik-gateway
-    namespace: traefik
-  hostnames:
-  - grafana.talos.m1xxos.me
-  rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
+  entryPoints:
+  - web
+  - websecure
+  routes:
+  - match: Host(`grafana.talos.m1xxos.me`)
+    kind: Rule
+    services:
     - name: kube-prometheus-stack-grafana
       port: 80
