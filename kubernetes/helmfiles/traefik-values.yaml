@@ -1,20 +1,30 @@
 providers:
-  # Disable the Ingress provider (optional)
-  # We do not want to use Ingress objects anymore!
+
+
   kubernetesIngress:
     enabled: false
-  # Enable the GatewayAPI provider
+
   kubernetesGateway:
     enabled: true
 
-# Allow the Gateway to expose HTTPRoute from all namespaces
+
 gateway:
   listeners:
     web:
+      port: 8000
+      hostname: ""
+      protocol: HTTP
       namespacePolicy: All
+    websecure:
+      port: 8443
+      hostname:
+      protocol: HTTPS
+      namespacePolicy: All
+      certificateRefs:
+      - kind: Secret
+        name: default-cert
+        namespace: default
 
-
-# Add access log configuration for stdout
 accessLog:
   enabled: true
   format: json
