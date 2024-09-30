@@ -14,3 +14,8 @@ spec:
     services:
     - name: api@internal
       kind: TraefikService
+  - match: Host(`traefik.talos.m1xxos.me`) && PathPrefix(`/metrics`)
+    kind: Rule
+    services:
+    - name: prometheus@internal
+      kind: TraefikService

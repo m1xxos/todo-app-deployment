@@ -1,12 +1,8 @@
 providers:
-
-
   kubernetesIngress:
     enabled: false
-
   kubernetesGateway:
     enabled: true
-
 
 gateway:
   listeners:
@@ -27,3 +23,9 @@ gateway:
 accessLog:
   enabled: true
   format: json
+
+metrics:
+  prometheus:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring

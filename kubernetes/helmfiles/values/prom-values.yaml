@@ -11,7 +11,11 @@ grafana:
         datasource: Prometheus
       node-exporter:
         gnetId: 1860
-        revision: 27
+        revision: 37
+        datasource: Prometheus
+      traefik-dashboard:
+        gnetId: 17346
+        revision: 9
         datasource: Prometheus
   timezone: "Europe/Moscow"
 
@@ -24,6 +28,9 @@ prometheus:
           resources:
             requests:
               storage: 5Gi
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
 
 alertmanager:
   alertmanagerSpec:
