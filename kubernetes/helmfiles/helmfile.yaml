@@ -13,6 +13,9 @@ repositories:
   url: https://helm.cilium.io/
 - name: jetstack
   url: https://charts.jetstack.io
+- name: mittwald
+  url: https://helm.mittwald.de
+
 
 releases:
 - name: cilium
@@ -29,6 +32,10 @@ releases:
   set:
   - name: crds.enabled
     value: true
+- name: kubernetes-replicator
+  chart: mittwald/kubernetes-replicator
+  namespace: kube-system
+  version: 2.10.2
 - name: traefik
   chart: traefik/traefik
   createNamespace: true
