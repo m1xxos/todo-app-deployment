@@ -13,8 +13,8 @@ repositories:
   url: https://helm.cilium.io/
 - name: jetstack
   url: https://charts.jetstack.io
-- name: mittwald
-  url: https://helm.mittwald.de
+- name: emberstack
+  url: https://emberstack.github.io/helm-charts
 
 
 releases:
@@ -24,6 +24,7 @@ releases:
   version: 1.16.2
   values:
   - ./cilium-values.yaml
+
 - name: cert-manager
   chart: jetstack/cert-manager
   namespace: cert-manager
@@ -32,24 +33,29 @@ releases:
   set:
   - name: crds.enabled
     value: true
-- name: kubernetes-replicator
-  chart: mittwald/kubernetes-replicator
+
+- name: reflector
+  chart: emberstack/reflector
   namespace: kube-system
-  version: 2.10.2
+  version: 7.1.288
+
 - name: traefik
   chart: traefik/traefik
   createNamespace: true
   namespace: traefik
   values:
   - ./traefik-values.yaml
+
 - name: longhorn
   chart: longhorn/longhorn
   namespace: longhorn-system
   version: 1.7.1
+
 - name: cnpg
   chart: cnpg/cloudnative-pg
   createNamespace: true
   namespace: cnpg-system
+
 - name: metrics-server
   chart: metrics-server/metrics-server
   namespace: kube-system
@@ -57,6 +63,7 @@ releases:
   set:
   - name: args[0]
     value: --kubelet-insecure-tls
+
 - name: kube-prometheus-stack
   chart: prometheus-community/kube-prometheus-stack
   namespace: monitoring
