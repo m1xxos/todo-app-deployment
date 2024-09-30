@@ -23,7 +23,7 @@ releases:
   namespace: kube-system
   version: 1.16.2
   values:
-  - ./cilium-values.yaml
+  - ./values/cilium-values.yaml
 
 - name: cert-manager
   chart: jetstack/cert-manager
@@ -44,7 +44,7 @@ releases:
   createNamespace: true
   namespace: traefik
   values:
-  - ./traefik-values.yaml
+  - ./values/traefik-values.yaml
 
 - name: longhorn
   chart: longhorn/longhorn
@@ -70,9 +70,9 @@ releases:
   createNamespace: true
   version: 62.7.0
   values:
-  - ./prom-values.yaml
+  - ./values/prom-values.yaml
   secrets:
-  - ./prom-secrets.yaml
+  - ./values/prom-secrets.yaml
   set:
   - name: installCRDs
     value: true
