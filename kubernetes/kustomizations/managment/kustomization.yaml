@@ -4,3 +4,4 @@ resources:
 - pgCluster.yaml
 - grafanaUi.yaml
 - hubbleUi.yaml
+- traefikUi.yaml
