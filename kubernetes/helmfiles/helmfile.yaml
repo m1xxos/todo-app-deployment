@@ -41,8 +41,8 @@ releases:
 
 - name: traefik
   chart: traefik/traefik
-  createNamespace: true
   namespace: traefik
+  version: 32.0.0
   values:
   - ./values/traefik-values.yaml
 
@@ -67,7 +67,6 @@ releases:
 - name: kube-prometheus-stack
   chart: prometheus-community/kube-prometheus-stack
   namespace: monitoring
-  createNamespace: true
   version: 62.7.0
   values:
   - ./values/prom-values.yaml
